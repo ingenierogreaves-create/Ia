@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es" data-color-scheme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greaves Samples - Analizador Profesional de Masterización</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Pantalla de Login/Registro -->
+        <div id="auth-screen" class="screen active">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <div class="brand-logo">
+                            <h1 class="app-title">
+                                <span class="title-icon">🎵</span>
+                                <span class="brand-text">GREAVES SAMPLES</span>
+                            </h1>
+                            <h2 class="app-subtitle" id="app-subtitle">Analizador Profesional de Masterización de Audio</h2>
+                            <p class="app-description" id="app-description">Análisis Técnico Avanzado para Evaluación de Mezcla y Master</p>
+                        </div>
+                        
+                        <div class="language-selector">
+                            <button class="language-btn active" data-lang="es">🇪🇸 Español</button>
+                            <button class="language-btn" data-lang="en">🇺🇸 English</button>
+                        </div>
+                    </div>
+                    
+                    <div class="auth-forms">
+                        <!-- Formulario de Login -->
+                        <div class="auth-form" id="login-form">
+                            <h3 id="login-title">Iniciar Sesión</h3>
+                            <form id="login-form-element" novalidate>
+                                <div class="form-group">
+                                    <label class="form-label" for="login-username" id="username-label">Usuario</label>
+                                    <input type="text" id="login-username" class="form-control" required autocomplete="username">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="login-password" id="password-label">Contraseña</label>
+                                    <input type="password" id="login-password" class="form-control" required autocomplete="current-password">
+                                </div>
+                                <button type="submit" class="btn btn--primary btn--full-width" id="login-btn">
+                                    <span id="login-btn-text">Iniciar Sesión</span>
+                                </button>
+                            </form>
+                            <div class="auth-helper">
+                                <p><strong>Credenciales de prueba:</strong></p>
+                                <p>Usuario: <code>Admin</code> | Contraseña: <code>5582</code></p>
+                            </div>
+                            <p class="auth-switch">
+                                <span id="no-account-text">¿No tienes cuenta?</span>
+                                <a href="#" id="show-register">Registrarse</a>
+                            </p>
+                        </div>
+                        
+                        <!-- Formulario de Registro -->
+                        <div class="auth-form hidden" id="register-form">
+                            <h3 id="register-title">Crear Cuenta</h3>
+                            <form id="register-form-element" novalidate>
+                                <div class="form-group">
+                                    <label class="form-label" for="register-username" id="reg-username-label">Usuario</label>
+                                    <input type="text" id="register-username" class="form-control" required autocomplete="username">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="register-email" id="email-label">Correo Electrónico</label>
+                                    <input type="email" id="register-email" class="form-control" required autocomplete="email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="register-password" id="reg-password-label">Contraseña</label>
+                                    <input type="password" id="register-password" class="form-control" required autocomplete="new-password">
+                                </div>
+                                <button type="submit" class="btn btn--primary btn--full-width" id="register-btn">
+                                    <span id="register-btn-text">Crear Cuenta</span>
+                                </button>
+                            </form>
+                            <p class="auth-switch">
+                                <span id="have-account-text">¿Ya tienes cuenta?</span>
+                                <a href="#" id="show-login">Iniciar Sesión</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Principal -->
+        <div id="main-screen" class="screen">
+            <div class="container">
+                <!-- Header con navegación -->
+                <header class="app-nav">
+                    <div class="nav-brand">
+                        <span class="title-icon">🎵</span>
+                        <span class="brand-text">GREAVES SAMPLES</span>
+                        <span class="nav-subtitle" id="nav-subtitle">Mastering Analyzer</span>
+                    </div>
+                    <div class="nav-actions">
+                        <div class="language-selector">
+                            <button class="language-btn" data-lang="es">🇪🇸</button>
+                            <button class="language-btn" data-lang="en">🇺🇸</button>
+                        </div>
+                        <button class="btn btn--outline" id="history-btn">
+                            📊 <span id="history-text">Historial</span>
+                        </button>
+                        <button class="btn btn--outline" id="admin-btn" style="display: none;">
+                            ⚙️ <span id="admin-text">Admin</span>
+                        </button>
+                        <button class="btn btn--secondary" id="logout-btn">
+                            🚪 <span id="logout-text">Salir</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Bienvenida y Nivel de Exigencia -->
+                <div class="welcome-section">
+                    <h2 id="welcome-title">Análisis Profesional de Masterización</h2>
+                    <p id="welcome-subtitle">Selecciona el nivel de exigencia para tu análisis técnico</p>
+                </div>
+
+                <!-- Selector de Nivel de Exigencia -->
+                <div class="strictness-selector">
+                    <div class="strictness-grid">
+                        <button class="strictness-card" data-level="flexible" id="flexible-btn">
+                            <div class="strictness-icon">🟢</div>
+                            <h4 id="flexible-title">Flexible</h4>
+                            <p id="flexible-desc">Tolerancias amplias para revisiones generales</p>
+                        </button>
+                        <button class="strictness-card active" data-level="regular" id="regular-btn">
+                            <div class="strictness-icon">🟡</div>
+                            <h4 id="regular-title">Regular</h4>
+                            <p id="regular-desc">Estándares profesionales normales</p>
+                        </button>
+                        <button class="strictness-card" data-level="strict" id="strict-btn">
+                            <div class="strictness-icon">🔴</div>
+                            <h4 id="strict-title">Estricto</h4>
+                            <p id="strict-desc">Máxima precisión técnica</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Selector de Modo de Análisis -->
+                <div class="mode-selector">
+                    <h3 id="mode-title">Tipo de Material</h3>
+                    <div class="mode-grid">
+                        <button class="mode-card active" data-mode="master" id="master-btn">
+                            <div class="mode-icon">🎯</div>
+                            <h4 id="master-title">Master Finalizado</h4>
+                            <p id="master-desc">Material masterizado listo para distribución</p>
+                        </button>
+                        <button class="mode-card" data-mode="mix" id="mix-btn">
+                            <div class="mode-icon">🎛️</div>
+                            <h4 id="mix-title">Mezcla Sin Masterizar</h4>
+                            <p id="mix-desc">Mezcla previa al proceso de mastering</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Zona de Carga de Archivos -->
+                <div class="upload-section">
+                    <div class="upload-zone" id="upload-zone">
+                        <div class="upload-content" id="upload-content">
+                            <div class="upload-icon">📁</div>
+                            <h3 id="upload-title">Arrastra tu archivo de audio aquí</h3>
+                            <p id="upload-subtitle">o haz clic para seleccionar desde tu dispositivo</p>
+                            <button class="btn btn--primary" id="select-file-btn">
+                                <span id="select-file-text">Seleccionar Archivo</span>
+                            </button>
+                            <input type="file" id="file-input" accept=".wav,.mp3,.flac,.m4a,.ogg,.aac" hidden>
+                        </div>
+                        
+                        <!-- Progreso de carga -->
+                        <div class="upload-progress hidden" id="upload-progress">
+                            <div class="progress-info">
+                                <h3 id="progress-title">Procesando archivo...</h3>
+                                <p id="progress-description">Preparando para análisis técnico</p>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <div class="progress-text" id="progress-text">0%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-info">
+                        <div class="supported-formats">
+                            <p><strong id="supported-text">Formatos soportados:</strong> WAV, MP3, FLAC, M4A, OGG, AAC</p>
+                            <p><strong id="max-size-text">Tamaño máximo:</strong> 100MB</p>
+                        </div>
+                        <button class="btn btn--outline" id="demo-btn">
+                            🎵 <span id="demo-text">Probar con Demo</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Análisis en Progreso -->
+        <div id="analysis-screen" class="screen">
+            <div class="container">
+                <div class="analysis-container">
+                    <div class="analysis-header">
+                        <h2 id="analysis-title">Análisis Profundo en Progreso</h2>
+                        <p id="analysis-subtitle">Realizando 5 pasadas de análisis técnico</p>
+                        <div class="analysis-counter">
+                            <span id="current-pass">1</span> / 5
+                        </div>
+                    </div>
+                    
+                    <!-- Visualización de Waveform -->
+                    <div class="waveform-container">
+                        <canvas id="waveform-canvas"></canvas>
+                        <div class="waveform-overlay">
+                            <div class="analyzing-text" id="analyzing-text">Analizando frecuencias...</div>
+                        </div>
+                    </div>
+
+                    <!-- Pasos del análisis -->
+                    <div class="analysis-steps">
+                        <div class="step-item active" id="step-1">
+                            <div class="step-icon">🔄</div>
+                            <h4 id="step-1-title">Cargando Audio</h4>
+                            <p id="step-1-desc">Procesando archivo de audio</p>
+                        </div>
+                        <div class="step-item" id="step-2">
+                            <div class="step-icon">📊</div>
+                            <h4 id="step-2-title">Detectando Saturación</h4>
+                            <p id="step-2-desc">Analizando picos digitales</p>
+                        </div>
+                        <div class="step-item" id="step-3">
+                            <div class="step-icon">🎯</div>
+                            <h4 id="step-3-title">Métricas Técnicas</h4>
+                            <p id="step-3-desc">Calculando LUFS, True Peak, DR</p>
+                        </div>
+                        <div class="step-item" id="step-4">
+                            <div class="step-icon">🔧</div>
+                            <h4 id="step-4-title">Generando Diagnóstico</h4>
+                            <p id="step-4-desc">Creando recomendaciones técnicas</p>
+                        </div>
+                        <div class="step-item" id="step-5">
+                            <div class="step-icon">📋</div>
+                            <h4 id="step-5-title">Finalizando Reporte</h4>
+                            <p id="step-5-desc">Preparando resultados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="results-screen" class="screen">
+            <div class="container">
+                <!-- Header del reporte -->
+                <header class="report-header">
+                    <div class="report-title-section">
+                        <h2 id="report-title">Reporte de Análisis Técnico</h2>
+                        <div class="file-meta">
+                            <span id="file-name-display">audio.wav</span>
+                            <span class="separator">•</span>
+                            <span id="analysis-date">Hoy</span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn btn--outline" id="new-analysis-btn">
+                            📁 <span id="new-analysis-text">Analizar Otro</span>
+                        </button>
+                        <button class="btn btn--outline" id="re-analyze-btn">
+                            🔄 <span id="re-analyze-text">Re-analizar</span>
+                        </button>
+                        <button class="btn btn--primary" id="export-pdf-btn">
+                            📄 <span id="export-pdf-text">Descargar PDF</span>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="results-content">
+                    <!-- Reproductor de Audio Avanzado -->
+                    <div class="card audio-player-section">
+                        <div class="card__body">
+                            <h3 id="player-title">🎧 Reproductor con Marcadores de Problemas</h3>
+                            
+                            <!-- HTML5 Audio Player -->
+                            <div class="native-player">
+                                <audio id="main-audio" controls preload="metadata" style="width: 100%;">
+                                    <source id="audio-source" src="" type="">
+                                    Tu navegador no soporta la reproducción de audio.
+                                </audio>
+                            </div>
+                            
+                            <!-- Waveform Visualizer -->
+                            <div class="waveform-player" id="waveform-player">
+                                <canvas id="player-waveform"></canvas>
+                                <div class="problem-markers" id="waveform-markers"></div>
+                            </div>
+                            
+                            <!-- Controles Personalizados -->
+                            <div class="custom-controls">
+                                <button class="control-btn" id="play-pause-btn">▶️</button>
+                                <button class="control-btn" id="skip-back-btn">⏪</button>
+                                <button class="control-btn" id="skip-forward-btn">⏩</button>
+                                <div class="volume-control">
+                                    <span>🔊</span>
+                                    <input type="range" id="volume-slider" min="0" max="100" value="50">
+                                </div>
+                                <div class="time-display">
+                                    <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Marcadores de Problemas Clickeables -->
+                            <div class="clickable-markers" id="clickable-markers">
+                                <!-- Se llenan dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Archivo -->
+                    <div class="card file-info-section">
+                        <div class="card__body">
+                            <h3 id="file-info-title">📋 Información del Archivo</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label" id="filename-label">Archivo:</span>
+                                    <span class="info-value" id="filename-value">audio.wav</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label" id="format-label">Formato:</span>
+                                    <span class="info-value" id="format-value">WAV</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label" id="size-label">Tamaño:</span>
+                                    <span class="info-value" id="size-value">45.2 MB</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label" id="duration-label">Duración:</span>
+                                    <span class="info-value" id="duration-value">3:24</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label" id="mode-label">Modo:</span>
+                                    <span class="info-value" id="mode-value">Master</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label" id="strictness-label">Exigencia:</span>
+                                    <span class="info-value" id="strictness-value">Regular</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detección de Saturación -->
+                    <div class="card clipping-section hidden" id="clipping-section">
+                        <div class="card__body">
+                            <h3 id="clipping-title">🔴 Saturación Digital Detectada</h3>
+                            <p id="clipping-description">Se detectaron picos que superan 0 dBFS causando distorsión digital.</p>
+                            <div class="clipping-timestamps" id="clipping-timestamps">
+                                <!-- Se llenan dinámicamente con timestamps clickeables -->
+                            </div>
+                            <div class="clipping-solution">
+                                <h4 id="clipping-solution-title">💡 Solución Inmediata:</h4>
+                                <p id="clipping-solution-text">Reducir ganancia general en 3-6 dB y aplicar limitador con techo en -1 dBTP</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métricas Principales -->
+                    <div class="card metrics-section">
+                        <div class="card__body">
+                            <h3 id="metrics-title">📊 Métricas Técnicas Principales</h3>
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 id="lufs-metric-title">LUFS Integrado</h4>
+                                        <span class="metric-status" id="lufs-status">🟢</span>
+                                    </div>
+                                    <div class="metric-value" id="lufs-value">-14.1</div>
+                                    <div class="metric-unit">LUFS</div>
+                                    <div class="metric-bar">
+                                        <div class="metric-progress" id="lufs-progress" style="width: 75%"></div>
+                                    </div>
+                                    <div class="metric-target" id="lufs-target">Target: -14 LUFS (Spotify)</div>
+                                </div>
+
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 id="peak-metric-title">True Peak</h4>
+                                        <span class="metric-status" id="peak-status">🟢</span>
+                                    </div>
+                                    <div class="metric-value" id="peak-value">-1.2</div>
+                                    <div class="metric-unit">dBTP</div>
+                                    <div class="metric-bar">
+                                        <div class="metric-progress" id="peak-progress" style="width: 85%"></div>
+                                    </div>
+                                    <div class="metric-target" id="peak-target">Máximo: -1.0 dBTP</div>
+                                </div>
+
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 id="dr-metric-title">Rango Dinámico</h4>
+                                        <span class="metric-status" id="dr-status">🟡</span>
+                                    </div>
+                                    <div class="metric-value" id="dr-value">8.7</div>
+                                    <div class="metric-unit">dB</div>
+                                    <div class="metric-bar">
+                                        <div class="metric-progress" id="dr-progress" style="width: 60%"></div>
+                                    </div>
+                                    <div class="metric-target" id="dr-target">Recomendado: >10 dB</div>
+                                </div>
+
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 id="spectral-metric-title">Balance Espectral</h4>
+                                        <span class="metric-status" id="spectral-status">🟢</span>
+                                    </div>
+                                    <div class="metric-value" id="spectral-value">2.6</div>
+                                    <div class="metric-unit">kHz</div>
+                                    <div class="metric-bar">
+                                        <div class="metric-progress" id="spectral-progress" style="width: 70%"></div>
+                                    </div>
+                                    <div class="metric-target" id="spectral-target">Centroide Espectral</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico Comparativo -->
+                    <div class="card chart-section">
+                        <div class="card__body">
+                            <h3 id="chart-title">📈 Comparación con Estándares</h3>
+                            <div class="chart-container" style="position: relative; height: 400px;">
+                                <canvas id="metrics-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagnóstico y Recomendaciones Técnicas -->
+                    <div class="card recommendations-section">
+                        <div class="card__body">
+                            <h3 id="recommendations-title">🔧 Diagnóstico y Recomendaciones Técnicas</h3>
+                            <div class="recommendations-container" id="recommendations-container">
+                                <!-- Se llenan dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compatibilidad por Plataformas -->
+                    <div class="card platforms-section">
+                        <div class="card__body">
+                            <h3 id="platforms-title">🎯 Compatibilidad por Plataforma</h3>
+                            <div class="platforms-grid">
+                                <div class="platform-item" id="spotify-platform">
+                                    <div class="platform-header">
+                                        <h4>Spotify</h4>
+                                        <span class="platform-status status--success" id="spotify-status">Óptimo</span>
+                                    </div>
+                                    <div class="platform-specs">
+                                        <span>Target: -14 LUFS, -1 dBTP</span>
+                                    </div>
+                                </div>
+                                <div class="platform-item" id="youtube-platform">
+                                    <div class="platform-header">
+                                        <h4>YouTube</h4>
+                                        <span class="platform-status status--success" id="youtube-status">Óptimo</span>
+                                    </div>
+                                    <div class="platform-specs">
+                                        <span>Target: -14 LUFS, -1 dBTP</span>
+                                    </div>
+                                </div>
+                                <div class="platform-item" id="apple-platform">
+                                    <div class="platform-header">
+                                        <h4>Apple Music</h4>
+                                        <span class="platform-status status--warning" id="apple-status">Ajustar</span>
+                                    </div>
+                                    <div class="platform-specs">
+                                        <span>Target: -16 LUFS, -1 dBTP</span>
+                                    </div>
+                                </div>
+                                <div class="platform-item" id="tidal-platform">
+                                    <div class="platform-header">
+                                        <h4>TIDAL</h4>
+                                        <span class="platform-status status--success" id="tidal-status">Óptimo</span>
+                                    </div>
+                                    <div class="platform-specs">
+                                        <span>Target: -14 LUFS, -1 dBTP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Referencias Normativas -->
+                    <div class="card standards-section">
+                        <div class="card__body">
+                            <h3 id="standards-title">📚 Referencias Normativas Aplicadas</h3>
+                            <div class="standards-grid">
+                                <div class="standard-item">
+                                    <h4>EBU R 128</h4>
+                                    <p id="ebu-description">Recomendación europea para normalización de loudness en radiodifusión</p>
+                                </div>
+                                <div class="standard-item">
+                                    <h4>ITU-R BS.1770</h4>
+                                    <p id="itu-description">Estándar internacional para medición de loudness de programas de audio</p>
+                                </div>
+                                <div class="standard-item">
+                                    <h4>AES TD1004.1.20-05</h4>
+                                    <p id="aes-description">Documento técnico AES para estándares de audio digital</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Historial -->
+        <div id="history-screen" class="screen">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="history-screen-title">📊 Historial de Análisis</h2>
+                    <button class="btn btn--outline" id="back-from-history">
+                        ← <span id="back-from-history-text">Volver al Dashboard</span>
+                    </button>
+                </header>
+                
+                <div class="history-content">
+                    <div class="history-stats">
+                        <div class="stat-item">
+                            <h3 id="total-analyses-count">0</h3>
+                            <p id="total-analyses-label">Análisis Realizados</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 id="avg-lufs">-14.2</h3>
+                            <p id="avg-lufs-label">LUFS Promedio</p>
+                        </div>
+                    </div>
+                    
+                    <div class="history-list" id="history-list">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Admin -->
+        <div id="admin-screen" class="screen">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="admin-screen-title">⚙️ Panel de Administrador</h2>
+                    <button class="btn btn--outline" id="back-from-admin">
+                        ← <span id="back-from-admin-text">Volver al Dashboard</span>
+                    </button>
+                </header>
+                
+                <div class="admin-content">
+                    <div class="admin-stats-grid">
+                        <div class="admin-stat-card">
+                            <h3 id="admin-users-count">1</h3>
+                            <p id="admin-users-label">Usuarios Registrados</p>
+                        </div>
+                        <div class="admin-stat-card">
+                            <h3 id="admin-total-analyses">0</h3>
+                            <p id="admin-total-analyses-label">Análisis Totales</p>
+                        </div>
+                        <div class="admin-stat-card">
+                            <h3 id="admin-avg-session">0</h3>
+                            <p id="admin-avg-session-label">Análisis por Usuario</p>
+                        </div>
+                    </div>
+                    
+                    <div class="users-management">
+                        <h3 id="users-management-title">👥 Gestión de Usuarios</h3>
+                        <div class="users-list" id="admin-users-list">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
